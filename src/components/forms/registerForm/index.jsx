@@ -33,13 +33,15 @@ const RegisterForm = ({ handleOk, refetch, user = {} }) => {
   const navigate = useNavigate();
 
   const handleRegister = async (values) => {
+    console.log(values, "hoo");
     setLoading(true);
     try {
       const obj = {
         ...values,
         image: imageUrl || "",
         date_of_birth: dayjs(values?.date_of_birth).format("X"),
-        // email: "",
+        email: values?.email ? values?.email : "",
+        password: values?.password ? values?.password : "",
       };
 
       if (user?.id) {
@@ -96,7 +98,7 @@ const RegisterForm = ({ handleOk, refetch, user = {} }) => {
 
   return (
     <Form
-      style={{ marginTop: "100px" }}
+      style={{ marginTop: "150px" }}
       name="registerForm"
       layout="vertical"
       onFinish={handleRegister}
@@ -205,6 +207,26 @@ const RegisterForm = ({ handleOk, refetch, user = {} }) => {
               {
                 required: true,
                 message: "Please input your Last Name!",
+              },
+            ]}
+          >
+            <Input className="fields" />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row span={24}>
+        <Col sm={24} md={24} lg={24}>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Email",
+              },
+              {
+                type: "email",
+                message: "invalid email!",
               },
             ]}
           >

@@ -1,5 +1,6 @@
 import instance from "../network/interceptor";
-const BASE_URL = import.meta.env.VITE_API_KEY;
+const PROD_URL = "https://cbp-task2-backend-g5.azurewebsites.net";
+const BASE_URL = import.meta.env.VITE_API_KEY || PROD_URL;
 export const LoginAPI = async (values) => {
   const res = await instance.post(`${BASE_URL}/login`, values);
   return res;
@@ -51,5 +52,21 @@ export const UnRegisterModuleAPI = async (id) => {
 
 export const ContactUs = async (values) => {
   const res = await instance.post(`${BASE_URL}/api/utils/contact_us`, values);
+  return res;
+};
+
+export const SENDEMAILFORGET = async (values) => {
+  const res = await instance.post(
+    `${BASE_URL}/api/accounts/send_reset_password`,
+    values
+  );
+  return res;
+};
+
+export const ValidateTokenFORGET = async (values) => {
+  const res = await instance.post(
+    `${BASE_URL}/api/accounts/validate_reset_token`,
+    values
+  );
   return res;
 };

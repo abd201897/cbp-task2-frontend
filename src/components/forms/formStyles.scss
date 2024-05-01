@@ -61,7 +61,7 @@
   cursor: pointer;
   outline: none;
   border: none;
-  padding: 1rem 2rem; /* Tailwind uses rem for padding */
+  // padding: 1rem 2rem;
   border-radius: 0.5rem 1rem; /* Tailwind uses rem for border-radius */
   background-color: #FF3A29;
   &:hover {
@@ -77,10 +77,10 @@
 .LabelStyles {
   display: flex;
   align-items: center;
-  gap: 2rem; /* Tailwind uses rem for gap */
-  margin-top: 4rem; /* Tailwind uses rem for margin */
+  gap: 2rem; 
+  margin-top: .5rem; /* Tailwind uses rem for margin */
   border-radius: 0.5rem; /* Tailwind uses rem for border-radius */
   color: #2255A6;
-  padding: 2rem 6rem; /* Tailwind uses rem for padding */
+  padding: 10px 6rem; /* Tailwind uses rem for padding */
   cursor: pointer;
 }
