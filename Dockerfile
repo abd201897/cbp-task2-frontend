@@ -7,6 +7,8 @@ ENV environment ${environment}
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+RUN echo $environment > .env.example
+RUN sed 's/ \([^ ]*=\)/\n\1/g' .env.example > .env
 COPY . .
 RUN npm run build
 
