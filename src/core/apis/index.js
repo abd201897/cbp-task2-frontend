@@ -30,13 +30,26 @@ export const getCourses = async () => {
 };
 
 export const getRegisterCourses = async () => {
-  const res = await instance.get(`${BASE_URL}/api/courses/get_student_module_register`);
+  const res = await instance.get(
+    `${BASE_URL}/api/courses/get_student_module_register`
+  );
   return res;
 };
-export const RegisterModuleAPI = async (values) => {
+export const RegisterModuleAPI = async (id) => {
   const res = await instance.post(
-    `${BASE_URL}/api/courses/add_student_module_register`,
-    values
+    `${BASE_URL}/api/courses/add_student_module_register?module_id=${id}`
   );
+  return res;
+};
+
+export const UnRegisterModuleAPI = async (id) => {
+  const res = await instance.delete(
+    `${BASE_URL}/api/courses/student_module_unregister?module_id=${id}`
+  );
+  return res;
+};
+
+export const ContactUs = async (values) => {
+  const res = await instance.post(`${BASE_URL}/api/utils/contact_us`, values);
   return res;
 };

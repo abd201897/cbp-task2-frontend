@@ -11,6 +11,7 @@ import { Contact, Courses, Home } from "../../pages/private";
 import Profile from "../../pages/private/Profile";
 import React from "react";
 import Registrations from "../../pages/private/Registrations";
+import ForgetPassword from "../../pages/public/Forget";
 
 function Routes() {
   const { user } = useAuth();
@@ -33,6 +34,10 @@ function Routes() {
         {
           path: "contact",
           element: <Contact />,
+        },
+        {
+          path: "forget-password",
+          element: <ForgetPassword />,
         },
         {
           path: "courses",

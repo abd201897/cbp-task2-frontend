@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Collapse, List, Space, Spin, message } from "antd";
-import { FaRegStar, FaRegCommentDots } from "react-icons/fa";
+import { FaRegStar, FaRegCommentDots, FaQuestion } from "react-icons/fa";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { MdStar } from "react-icons/md";
 import { SlLike } from "react-icons/sl";
-import { RegisterModuleAPI, getCourses } from "../../../core/apis";
+import {
+  RegisterModuleAPI,
+  UnRegisterModuleAPI,
+  getCourses,
+} from "../../../core/apis";
 import { useAuth } from "../../../core/store/authContext";
 
 const MakeModule = (mod) => {
   const data = mod?.map((module, i) => ({
     key: module?.id,
-    isRegister: module?.isRegister || false,
+    availability: module?.availability,
+    is_registered: module?.is_registered || false,
     href: "https://ant.design",
     title: `Module Name:  ${module?.name} (${module?.availability})`,
     avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${i}`,
@@ -45,16 +51,25 @@ const Courses = () => {
     }
   };
 
-  const handleRegister = (item) => {
-    console.log("inn", item);
+  const handleRegister = async (item) => {
     try {
-      if (item?.key && !item?.isRegister) {
-        const res = RegisterModuleAPI({
-          module: item?.key,
-          student: user?.token?.user_id,
-        });
+      if (item?.key && !item?.is_registered) {
+        const res = await RegisterModuleAPI(item?.key);
         if (res?.status < 400) {
           message?.success("Module Registered Successfully");
+          getCoursesFun();
+        } else {
+          console.log(res, "aaa");
+          message?.error(res?.data?.message);
+        }
+      } else {
+        const res = await UnRegisterModuleAPI(item?.key);
+        if (res?.status < 400) {
+          message?.success("Module Unregistered Successfully");
+          getCoursesFun();
+        } else {
+          console.log(res, "aaa");
+          message?.error(res?.data?.message);
         }
       }
     } catch (error) {
@@ -69,6 +84,7 @@ const Courses = () => {
   const modules = courses?.map((mod) => {
     return {
       key: mod?.id,
+      availability: mod?.availability,
       label: `Course Name: ${mod?.name}`,
       children: (
         <List
@@ -95,25 +111,32 @@ const Courses = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
                     gap: 5,
                     cursor: "pointer",
                   }}
                   key={item?.id}
                   onClick={() => handleRegister(item)}
                 >
-                  <MdStar
-                    size={20}
-                    color={item?.isRegister ? "#ee9626" : "grey"}
+                  <FaThumbsUp
+                    color={item?.is_registered ? "#ee9626" : "grey"}
                     enableBackground={true}
                   />
-                  {item?.isRegister ? "Enrolled" : "Register "}
+                  {item?.is_registered ? "Enrolled" : "Register "}
                 </div>,
-                <SlLike icon={SlLike} text="156" key="list-vertical-like-o" />,
-                <FaRegCommentDots
-                  icon={FaRegCommentDots}
-                  text="2"
-                  key="list-vertical-message"
-                />,
+                // <SlLike icon={SlLike} text="156" key="list-vertical-like-o" />,
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 5,
+                  }}
+                  key={item?.id}
+                >
+                  {item?.availability}
+                  {<FaQuestion color="blue" title="Availability" />}
+                </div>,
               ]}
               extra={
                 <img
