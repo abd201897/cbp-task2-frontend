@@ -1,5 +1,5 @@
 # Stage 1: Build the project
-FROM node:14-alpine AS build
+FROM node:20-alpine AS build
 
 ARG environment
 ENV environment ${environment}
