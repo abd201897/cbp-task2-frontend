@@ -5,6 +5,8 @@ import { IoBookOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import LogoSm from "../../../public/favicon-32x32.png";
 import "./sidebar.scss";
+import { BiBook, BiUser } from "react-icons/bi";
+import { BsNewspaper } from "react-icons/bs";
 const { Sider } = Layout;
 const { Text } = Typography;
 export default function SideBar({ collapsed }) {
@@ -52,8 +54,23 @@ export default function SideBar({ collapsed }) {
           {
             key: "/courses",
             icon: <IoBookOutline size={20} />,
-            label: "Courses",
+            label: "Modules",
           },
+          {
+            key: "/profile",
+            icon: <BiUser size={20} />,
+            label: "Profile",
+          },
+          {
+            key: "/registrations",
+            icon: <BiBook size={20} />,
+            label: "My Registrations",
+          },
+          // {
+          //   key: "/news",
+          //   icon: <BsNewspaper size={20} />,
+          //   label: "News",
+          // },
         ]}
       />
     </Sider>

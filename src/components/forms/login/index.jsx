@@ -16,7 +16,7 @@ const LoginForm = () => {
       layout="vertical"
       onFinish={handleLogin}
       autoComplete="off"
-      className="Form"
+      className="Form Login"
     >
       <Title className="headingText">Login</Title>
       <Form.Item
@@ -57,7 +57,7 @@ const LoginForm = () => {
         </Button>
       </Form.Item>
       <div className="links">
-        <Link to="forget-password" className="forget">
+        <Link to="/forget-password" className="forget">
           Forget Password
         </Link>
         <Link to="/register" className="signin">

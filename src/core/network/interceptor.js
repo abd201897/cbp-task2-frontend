@@ -1,7 +1,7 @@
 import axios from "axios";
-
+const PROD_URL = "https://cbp-task2-backend-g5.azurewebsites.net";
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_KEY,
+  baseURL: import.meta.env.VITE_API_KEY || PROD_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,8 +11,8 @@ instance.interceptors.request.use(
     const user = localStorage.getItem("user");
     if (user) {
       const authData = JSON.parse(user);
-      if (authData && authData?.access_token) {
-        config.headers.Authorization = `Bearer abcd`;
+      if (authData && authData?.access) {
+        config.headers.Authorization = `Bearer ${authData?.access}`;
       }
     }
     return config;
@@ -22,7 +22,7 @@ instance.interceptors.request.use(
   }
 );
 
-// response handler when we will receive response from API 
+// response handler when we will receive response from API
 instance.interceptors.response.use(
   (response) => {
     return response;

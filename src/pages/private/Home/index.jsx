@@ -12,7 +12,7 @@ const Home = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   return (
-    <div>
+    <div style={{ height: "91vh", overflow: "auto" }}>
       <div className="toplayer">
         <div className="topContent">
           <h1 className="heading">Professional and Lifelong Learning</h1>
@@ -35,16 +35,19 @@ const Home = () => {
         <SliderImages />
       </div>
       <div className="ContentSection">
-        <h1 className="feature subheading">Featured Courses</h1>
-        <Courses courses={featureCourses} />
-        <h1 className="feature subheading">Trending Courses</h1>
-        <Carousel autoplay>
-          <Courses courses={featureCourses} />
-          <Courses courses={featureCourses} />
-          <Courses courses={featureCourses} />
-        </Carousel>
+        <h1 style={{ textAlign: "center" }} className="feature subheading">
+          Featured Courses
+        </h1>
+        <div style={{ textAlign: "center" }}>
+          <Courses />
+        </div>
+        <h1 style={{ textAlign: "center" }} className="feature subheading">
+          Trending Courses
+        </h1>
+        <div style={{ textAlign: "center" }}>
+          <Courses count={6} />
+        </div>
       </div>
-      <div></div>
     </div>
   );
 };

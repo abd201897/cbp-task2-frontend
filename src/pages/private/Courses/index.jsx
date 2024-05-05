@@ -1,78 +1,212 @@
-import React from "react";
-import { Avatar, List, Space } from "antd";
-import { FaRegStar, FaRegCommentDots } from "react-icons/fa";
-
+import React, { useEffect, useState } from "react";
+import { Avatar, Collapse, Input, List, Space, Spin, message } from "antd";
+import { FaRegStar, FaRegCommentDots, FaQuestion } from "react-icons/fa";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { MdEventAvailable, MdStar } from "react-icons/md";
 import { SlLike } from "react-icons/sl";
-const data = Array.from({
-  length: 23,
-}).map((_, i) => ({
-  href: 'https://ant.design',
-  title: `Course Module part ${i}`,
-  avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${i}`,
-  description:
-    'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-  content:
-    'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-}));
-const IconText = ({ icon, text }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
+import "./modules.scss";
+import {
+  RegisterModuleAPI,
+  UnRegisterModuleAPI,
+  getCourses,
+} from "../../../core/apis";
+import { useAuth } from "../../../core/store/authContext";
+import { BiSearch } from "react-icons/bi";
+
+const MakeModule = (mod) => {
+  const data = mod?.map((module, i) => ({
+    key: module?.id,
+    availability: module?.availability,
+    is_registered: module?.is_registered || false,
+    href: "#",
+    title: `Module Name:  ${module?.name} (${module?.availability})`,
+    avatar: ``,
+    description: (
+      <div>
+        <p>code: {module?.code}</p>
+        <p>credit hours: {module?.credit}</p>
+      </div>
+    ),
+    content: module?.description,
+  }));
+  return data;
+};
+
 const Courses = () => {
-  return (
-    <>
-      <h1>Course Modules</h1>
-      <List
-        itemLayout="vertical"
-        size="large"
-        pagination={{
-          onChange: (page) => {
-            console.log(page);
-          },
-          pageSize: 3,
-        }}
-        dataSource={data}
-        footer={
-          <div>
-            <b>ant design</b> footer part
-          </div>
+  const { user } = useAuth();
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [filteredCourses, setFilteredCourses] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const getCoursesFun = async () => {
+    setLoading(true);
+    try {
+      const res = await getCourses();
+      if (res?.status < 400) {
+        console.log(res?.data);
+        setCourses(res?.data?.results);
+        setFilteredCourses(res?.data?.results);
+      } else {
+        message.error("something wrong");
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error, "ERR Profile");
+      setLoading(false);
+    }
+  };
+
+  const handleRegister = async (item) => {
+    setLoading(true);
+    try {
+      if (item?.key && !item?.is_registered) {
+        const res = await RegisterModuleAPI(item?.key);
+        if (res?.status < 400) {
+          message?.success("Module Registered Successfully");
+          setLoading(false);
+          getCoursesFun();
+        } else {
+          message?.error(res?.data?.message);
+          setLoading(false);
         }
-        renderItem={(item) => (
-          <List.Item
-            key={item.title}
-            actions={[
-              <IconText
-                icon={FaRegStar}
-                text="156"
-                key="list-vertical-star-o"
-              />,
-              <IconText icon={SlLike} text="156" key="list-vertical-like-o" />,
-              <IconText
-                icon={FaRegCommentDots}
-                text="2"
-                key="list-vertical-message"
-              />,
-            ]}
-            extra={
-              <img
-                width={272}
-                alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+      } else {
+        const res = await UnRegisterModuleAPI(item?.key);
+        if (res?.status < 400) {
+          message?.success("Module Unregistered Successfully");
+          setLoading(false);
+          getCoursesFun();
+        } else {
+          message?.error(res?.data?.message);
+          setLoading(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const onSearch = (value) => {
+    setSearchText(value);
+    const filteredData = courses.filter((course) => {
+      const courseNameLower = course.name.toLowerCase();
+      const searchTextLower = value?.toLowerCase();
+      return courseNameLower.includes(searchTextLower);
+    });
+    setFilteredCourses(filteredData);
+  };
+  useEffect(() => {
+    getCoursesFun();
+  }, []);
+
+  const modules = filteredCourses?.map((mod) => {
+    return {
+      key: mod?.id,
+      availability: mod?.availability,
+      label: `Course Name: ${mod?.name}`,
+      children: (
+        <List
+          key={mod?.id}
+          itemLayout="vertical"
+          size="large"
+          pagination={{
+            onChange: (page) => {
+              console.log(page);
+            },
+            pageSize: 3,
+          }}
+          dataSource={MakeModule(mod?.modules)}
+          // footer={
+          //   <div>
+          //     <b>ant design</b> footer part
+          //   </div>
+          // }
+          renderItem={(item) => (
+            <List.Item
+              key={item?.title}
+              actions={[
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 5,
+                    cursor: "pointer",
+                  }}
+                  key={item?.id}
+                  onClick={() => handleRegister(item)}
+                >
+                  {loading && <Spin spinning={loading} />}
+                  <FaThumbsUp
+                    color={item?.is_registered ? "#ee9626" : "grey"}
+                    enableBackground={true}
+                    size={20}
+                  />
+                  {item?.is_registered ? "Enrolled" : "Register "}
+                </div>,
+                // <SlLike icon={SlLike} text="156" key="list-vertical-like-o" />,
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 5,
+                  }}
+                  key={item?.id}
+                >
+                  <MdEventAvailable size={20}/>
+                  {item?.availability}
+                  {/* {<FaQuestion color="blue" title="Availability" />} */}
+                </div>,
+              ]}
+              // extra={
+              //   <img
+              //     width={272}
+              //     alt="logo"
+              //     src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+              //   />
+              // }
+            >
+              <List.Item.Meta
+                avatar={
+                  <Avatar
+                    src={item?.is_registered ? user?.token[0]?.image ?? "" : ""}
+                    size={50}
+                  />
+                }
+                title={<a href={item.href}>{item.title}</a>}
+                description={item.description}
               />
-            }
-          >
-            <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}</a>}
-              description={item.description}
-            />
-            {item.content}
-          </List.Item>
-        )}
+              <pre style={{ marginTop: "1rem" }}>{item.content}</pre>
+              {/* {item.content} */}
+            </List.Item>
+          )}
+        />
+      ),
+    };
+  });
+  const first_course = filteredCourses[0]?.id;
+  return (
+    <div style={{ height: "92vh", overflow: "auto", padding: "10px 20px" }}>
+      <h1 style={{ padding: "0px 0px 10px 0px" }}>Courses and Modules</h1>
+      <Input
+        prefix={<BiSearch size={20} />}
+        placeholder="Search By Course Name"
+        allowClear
+        onChange={(e) => onSearch(e?.target?.value)}
+        style={{ marginBottom: 16, height: "3.5rem" }}
+        className="fields"
       />
-    </>
+      <div className="modulesSection">
+        {loading && (
+          <Spin
+            spinning={loading}
+            style={{ marginLeft: "50%", marginTop: "10px" }}
+          />
+        )}
+        <Collapse items={modules} defaultActiveKey={[first_course]} />
+      </div>
+    </div>
   );
 };
 
