@@ -3,7 +3,7 @@ import "./contact.scss";
 
 const Contact = () => {
   return (
-    <div id="registerPage">
+    <div id="registerPage" style={{ height: "93vh", overflow: "auto", padding: "10px 20px" }}>
       <ContactUsForm />
     </div>
   );

@@ -5,9 +5,20 @@
   background-color: rgba(237, 244, 250, 0.5);
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  &.Login {
-    width: 800px;
+  height: 40rem;
+  overflow: auto;
+  width: 800px;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  :-webkit-scrollbar {
+    display: none;
   }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  // &.Login {
+  //   width: 800px;
+  // }
 
   .headingText {
     font-weight: bold;
@@ -31,6 +42,14 @@
     background-color: base.$bg-dark;
   }
 
+  .cancelBtn {
+    height: 3.5rem;
+    width: 100%;
+    margin-top: 20px;
+    font-size: large;
+    font-weight: 600;
+  }
+
   .links {
     display: flex;
     justify-content: space-between;
@@ -51,8 +70,6 @@
   }
 }
 
-
-
 .delete-button {
   position: absolute;
   left: 0;
@@ -63,7 +80,7 @@
   border: none;
   // padding: 1rem 2rem;
   border-radius: 0.5rem 1rem; /* Tailwind uses rem for border-radius */
-  background-color: #FF3A29;
+  background-color: #ff3a29;
   &:hover {
     background-color: #d0021b; /* Equivalent of red-400 in SCSS */
   }
@@ -77,10 +94,10 @@
 .LabelStyles {
   display: flex;
   align-items: center;
-  gap: 2rem; 
-  margin-top: .5rem; /* Tailwind uses rem for margin */
+  gap: 2rem;
+  margin-top: 0.5rem; /* Tailwind uses rem for margin */
   border-radius: 0.5rem; /* Tailwind uses rem for border-radius */
-  color: #2255A6;
+  color: #2255a6;
   padding: 10px 6rem; /* Tailwind uses rem for padding */
   cursor: pointer;
 }

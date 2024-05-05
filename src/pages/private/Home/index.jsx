@@ -35,16 +35,19 @@ const Home = () => {
         <SliderImages />
       </div>
       <div className="ContentSection">
-        <h1 className="feature subheading">Featured Courses</h1>
+        <h1 style={{ textAlign: "center" }} className="feature subheading">
+          Featured Courses
+        </h1>
         <div style={{ textAlign: "center" }}>
           <Courses />
         </div>
-        <h1 className="feature subheading">Trending Courses</h1>
-        <Carousel autoplay>
-          <Courses count={6}/>
-        </Carousel>
+        <h1 style={{ textAlign: "center" }} className="feature subheading">
+          Trending Courses
+        </h1>
+        <div style={{ textAlign: "center" }}>
+          <Courses count={6} />
+        </div>
       </div>
-      <div></div>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Col,
+  Descriptions,
   Drawer,
   Flex,
   Image,
@@ -66,12 +67,21 @@ const Profile = () => {
   useEffect(() => {
     getProfileFun();
   }, []);
-
+  const excludedKeys = [
+    "is_staff",
+    "id",
+    "is_superuser",
+    "image",
+    "role",
+    "is_active",
+  ];
   let profileValues = [];
-  Object.entries(profile)?.map(([key, val], ind) =>
-    profileValues.push({ key: ind, label: key, children: val })
-  );
-  console.log(profileValues, "list");
+  Object.entries(profile)
+    .filter(([key]) => !excludedKeys?.includes(key)) // Filter out excluded keys
+    .map(([key, val]) =>
+      profileValues.push({ key: key, label: key, children: val })
+    );
+
   return (
     <div className="container">
       <Spin spinning={loading}>
@@ -100,11 +110,24 @@ const Profile = () => {
                   </Title>
                 </div>
                 <Flex vertical gap={10} justify="space-between">
-                  <Button level={3} icon={<BsEye />} onClick={showDrawer}>
-                    View More{" "}
+                  <Button
+                    type="primary"
+                    level={3}
+                    icon={<BsEye />}
+                    size="large"
+                    onClick={showDrawer}
+                  >
+                    View More
                   </Button>
-                  <Button level={3} icon={<BiEdit />} onClick={showModal}>
-                    Edit Profile{" "}
+                  <Button
+                    size="large"
+                    type="primary"
+                    danger
+                    level={3}
+                    icon={<BiEdit />}
+                    onClick={showModal}
+                  >
+                    Edit Profile
                   </Button>
                 </Flex>
               </Flex>
@@ -112,30 +135,30 @@ const Profile = () => {
           </Row>
         </Card>
       </Spin>
-      <Drawer
-        title="Profile Details"
-        onClose={onClose}
-        open={open}
-        width={"50%"}
-      >
-        <Flex wrap="wrap" gap={5}>
-          {Object.entries(profile)?.map(([key, val], ind) => (
-            <Card style={{ width: "30%" }} key={ind}>
-              <Title level={5}>{key}</Title>
-              <Title level={4} style={{ color: "#003b73" }}>
-                {val}
-              </Title>
-            </Card>
-          ))}
-        </Flex>
+      <Drawer title="" onClose={onClose} open={open} width={"90%"}>
+        <Card>
+          <Flex justify="space-between">
+            <Title>Profile Details</Title>
+            <Image
+              src={profile?.image}
+              style={{
+                width: "8rem",
+                height: "8rem",
+                borderRadius: "4rem",
+              }}
+            />
+          </Flex>
+          <Descriptions items={profileValues} />
+        </Card>
       </Drawer>
       <Modal
         title=""
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        closeIcon={false}
         footer={null}
-        width={"60%"}
+        width={"850px"}
         destroyOnClose
       >
         <RegisterForm

@@ -70,3 +70,10 @@ export const ValidateTokenFORGET = async (values) => {
   );
   return res;
 };
+
+export const getNews = async () => {
+  const res = await instance.get(
+    `https://api.thenewsapi.com/v1/news/all?api_token=7hwoZJJIqMyAk4V7oI5X1Yknk7UIT8jNUzjatUOh&search=usd`
+  );
+  return res;
+};

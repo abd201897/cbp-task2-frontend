@@ -12,6 +12,8 @@ import Profile from "../../pages/private/Profile";
 import React from "react";
 import Registrations from "../../pages/private/Registrations";
 import ForgetPassword from "../../pages/public/Forget";
+import NOTFOUND from "../../pages/public/not-found";
+import News from "../../pages/public/news/News";
 
 function Routes() {
   const { user } = useAuth();
@@ -34,6 +36,10 @@ function Routes() {
         {
           path: "contact",
           element: <Contact />,
+        },
+        {
+          path: "news",
+          element: <News />,
         },
         {
           path: "forget-password",
@@ -63,7 +69,7 @@ function Routes() {
     },
     {
       path: "*",
-      element: <div>not found</div>,
+      element: <NOTFOUND />,
     },
   ]);
   return <RouterProvider router={router} />;

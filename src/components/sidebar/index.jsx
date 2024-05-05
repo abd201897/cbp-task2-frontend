@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LogoSm from "../../../public/favicon-32x32.png";
 import "./sidebar.scss";
 import { BiBook, BiUser } from "react-icons/bi";
+import { BsNewspaper } from "react-icons/bs";
 const { Sider } = Layout;
 const { Text } = Typography;
 export default function SideBar({ collapsed }) {
@@ -65,6 +66,11 @@ export default function SideBar({ collapsed }) {
             icon: <BiBook size={20} />,
             label: "My Registrations",
           },
+          // {
+          //   key: "/news",
+          //   icon: <BsNewspaper size={20} />,
+          //   label: "News",
+          // },
         ]}
       />
     </Sider>

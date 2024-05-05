@@ -33,7 +33,6 @@ const RegisterForm = ({ handleOk, refetch, user = {} }) => {
   const navigate = useNavigate();
 
   const handleRegister = async (values) => {
-    console.log(values, "hoo");
     setLoading(true);
     try {
       const obj = {
@@ -98,7 +97,7 @@ const RegisterForm = ({ handleOk, refetch, user = {} }) => {
 
   return (
     <Form
-      style={{ marginTop: "150px" }}
+      // style={{ marginTop: "150px" }}
       name="registerForm"
       layout="vertical"
       onFinish={handleRegister}
@@ -317,10 +316,20 @@ const RegisterForm = ({ handleOk, refetch, user = {} }) => {
         >
           {user?.id ? "Update Profile" : "Create Account"}
         </Button>
+        <Button
+          onClick={handleOk}
+          className="cancelBtn"
+          loading={loading}
+          type="primary"
+          danger
+          size="large"
+        >
+          Cancel
+        </Button>
       </Form.Item>
       {!user?.id && (
         <div className="links">
-          <Link to="forget-password" className="forget">
+          <Link to="/forget-password" className="forget">
             Forget Password
           </Link>
           <Link to="/login" className="signin">

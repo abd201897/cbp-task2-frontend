@@ -55,11 +55,11 @@ const Navbar = ({ menuState }) => {
         {
           type: "divider",
         },
-        {
-          key: "1-4",
-          label: "Settings",
-          icon: <RiSettings5Line color="#2255A6" size={20} />,
-        },
+        // {
+        //   key: "1-4",
+        //   label: "Settings",
+        //   icon: <RiSettings5Line color="#2255A6" size={20} />,
+        // },
         {
           key: "1-5",
           label: "Logout",
@@ -132,16 +132,18 @@ const Navbar = ({ menuState }) => {
             className="rightGroup"
           >
             <Avatar shape="square" size="large" icon={<RiUser3Line />} />
-            <Text color="#fff" className="username">{user?.token?.username}</Text>
+            <Text color="#fff" className="username">
+              {user?.token?.username}
+            </Text>
             <IoMdArrowDropdown size={20} />
           </Flex>
         </Dropdown>
       ) : (
         <div className="navBtns">
-          <Button>
+          <Button onClick={() => navigate("/login")}>
             <Link to="/login">Login</Link>
           </Button>
-          <Button>
+          <Button onClick={() => navigate("/register")}>
             <Link to="/register">Register</Link>
           </Button>
         </div>
