@@ -1,17 +1,15 @@
+import { Avatar, Collapse, Input, List, Spin, message } from "antd";
 import React, { useEffect, useState } from "react";
-import { Avatar, Collapse, Input, List, Space, Spin, message } from "antd";
-import { FaRegStar, FaRegCommentDots, FaQuestion } from "react-icons/fa";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import { MdEventAvailable, MdStar } from "react-icons/md";
-import { SlLike } from "react-icons/sl";
-import "./modules.scss";
+import { BiSearch } from "react-icons/bi";
+import { FaThumbsUp } from "react-icons/fa";
+import { MdEventAvailable } from "react-icons/md";
 import {
   RegisterModuleAPI,
   UnRegisterModuleAPI,
   getCourses,
 } from "../../../core/apis";
 import { useAuth } from "../../../core/store/authContext";
-import { BiSearch } from "react-icons/bi";
+import "./modules.scss";
 
 const MakeModule = (mod) => {
   const data = mod?.map((module, i) => ({
@@ -43,7 +41,6 @@ const Courses = () => {
     try {
       const res = await getCourses();
       if (res?.status < 400) {
-        console.log(res?.data);
         setCourses(res?.data?.results);
         setFilteredCourses(res?.data?.results);
       } else {
@@ -91,7 +88,18 @@ const Courses = () => {
     const filteredData = courses.filter((course) => {
       const courseNameLower = course.name.toLowerCase();
       const searchTextLower = value?.toLowerCase();
-      return courseNameLower.includes(searchTextLower);
+      let isMatch = courseNameLower.includes(searchTextLower);
+
+      if (!isMatch) {
+        for (const module of course.modules) {
+          const moduleNameLower = module.name.toLowerCase();
+          if (moduleNameLower.includes(searchTextLower)) {
+            isMatch = true;
+            break; // Stop iterating modules if a match is found
+          }
+        }
+      }
+      return isMatch;
     });
     setFilteredCourses(filteredData);
   };
@@ -154,7 +162,7 @@ const Courses = () => {
                   }}
                   key={item?.id}
                 >
-                  <MdEventAvailable size={20}/>
+                  <MdEventAvailable size={20} />
                   {item?.availability}
                   {/* {<FaQuestion color="blue" title="Availability" />} */}
                 </div>,
@@ -185,13 +193,13 @@ const Courses = () => {
       ),
     };
   });
-  const first_course = filteredCourses[0]?.id;
+
   return (
     <div style={{ height: "92vh", overflow: "auto", padding: "10px 20px" }}>
       <h1 style={{ padding: "0px 0px 10px 0px" }}>Courses and Modules</h1>
       <Input
         prefix={<BiSearch size={20} />}
-        placeholder="Search By Course Name"
+        placeholder="Search By Course OR Module Name"
         allowClear
         onChange={(e) => onSearch(e?.target?.value)}
         style={{ marginBottom: 16, height: "3.5rem" }}
@@ -204,7 +212,7 @@ const Courses = () => {
             style={{ marginLeft: "50%", marginTop: "10px" }}
           />
         )}
-        <Collapse items={modules} defaultActiveKey={[first_course]} />
+        <Collapse items={modules} />
       </div>
     </div>
   );

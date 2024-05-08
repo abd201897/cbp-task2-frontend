@@ -12,7 +12,6 @@ const Courses = ({ count = 3 }) => {
     try {
       const res = await getCourses();
       if (res?.status < 400) {
-        console.log(res?.data);
         setCourses(res?.data?.results);
       } else {
         message.error("something wrong");
