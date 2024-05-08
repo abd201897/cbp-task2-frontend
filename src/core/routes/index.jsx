@@ -38,8 +38,8 @@ function Routes() {
           element: <Contact />,
         },
         {
-          path: "news",
-          element: <News />,
+          path: "clients",
+          element:<ProtectedRoute component={<News />} />,
         },
         {
           path: "forget-password",
