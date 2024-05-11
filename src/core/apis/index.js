@@ -1,3 +1,4 @@
+import axios from "axios";
 import instance from "../network/interceptor";
 const PROD_URL = "https://cbp-task2-backend-g5.azurewebsites.net";
 const BASE_URL = import.meta.env.VITE_API_KEY || PROD_URL;
@@ -76,4 +77,11 @@ export const getNews = async () => {
     `https://api.thenewsapi.com/v1/news/all?api_token=7hwoZJJIqMyAk4V7oI5X1Yknk7UIT8jNUzjatUOh&search=usd`
   );
   return res;
+};
+
+export const ThirdPartyAPI = async () => {
+  try {
+    const res = await axios.get("https://jsonplaceholder.typicode.com/users");
+    return res;
+  } catch (error) {}
 };

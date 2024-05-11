@@ -66,11 +66,11 @@ export default function SideBar({ collapsed }) {
             icon: <BiBook size={20} />,
             label: "My Registrations",
           },
-          // {
-          //   key: "/news",
-          //   icon: <BsNewspaper size={20} />,
-          //   label: "News",
-          // },
+          {
+            key: "/clients",
+            icon: <BsNewspaper size={20} />,
+            label: "Third Party/Clients",
+          },
         ]}
       />
     </Sider>

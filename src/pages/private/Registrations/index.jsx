@@ -99,7 +99,6 @@ const Registrations = () => {
 
   const handleShowCourseDetails = (course) => {
     setCourseDetails(course?.modules);
-    console.log(course);
     showDrawer();
   };
 
